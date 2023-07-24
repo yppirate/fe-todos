@@ -1,7 +1,10 @@
+/* Basic styling for the To-Do List App */
+
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+  background-color: #f0f0f0;
 }
 
 header {
@@ -17,6 +20,11 @@ header h1 {
 
 main {
   padding: 1rem;
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 5px;
 }
 
 .task-container {
@@ -27,12 +35,15 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 1rem;
 }
 
 input[type="text"] {
   flex: 1;
   padding: 0.5rem;
   margin-right: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 3px;
 }
 
 button {
@@ -40,6 +51,7 @@ button {
   background-color: #333;
   color: #fff;
   border: none;
+  border-radius: 3px;
   cursor: pointer;
 }
 
