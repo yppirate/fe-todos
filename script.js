@@ -39,8 +39,21 @@ function renderTasks() {
       renderTasks();
     });
 
+    const deleteBtn = document.createElement('button');
+    deleteBtn.innerText = 'Delete';
+    deleteBtn.addEventListener('click', () => {
+      removeTask(task.id);
+    });
+
+    taskElement.appendChild(deleteBtn);
     taskContainer.appendChild(taskElement);
   });
+}
+
+// Function to remove a task
+function removeTask(taskId) {
+  tasks = tasks.filter(task => task.id !== taskId);
+  renderTasks();
 }
 
 // Event listener for the "Add" button
