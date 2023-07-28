@@ -22,6 +22,16 @@ function addTask() {
   }
 }
 
+// Function to toggle task completion
+function toggleTaskCompletion(taskId) {
+  tasks.forEach(task => {
+    if (task.id === taskId) {
+      task.completed = !task.completed;
+    }
+  });
+  renderTasks();
+}
+
 // Function to render tasks in the task container
 function renderTasks() {
   taskContainer.innerHTML = '';
@@ -39,12 +49,29 @@ function renderTasks() {
       renderTasks();
     });
 
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    checkbox.id = `task-${task.id}`;
+    checkbox.checked = task.completed;
+    checkbox.addEventListener('change', () => {
+      toggleTaskCompletion(task.id);
+    });
+
+    const label = document.createElement('label');
+    label.setAttribute('for', `task-${task.id}`);
+    label.innerText = task.text;
+    if (task.completed) {
+      label.style.textDecoration = 'line-through';
+    }
+
     const deleteBtn = document.createElement('button');
     deleteBtn.innerText = 'Delete';
     deleteBtn.addEventListener('click', () => {
       removeTask(task.id);
     });
 
+    taskElement.appendChild(checkbox);
+    taskElement.appendChild(label);
     taskElement.appendChild(deleteBtn);
     taskContainer.appendChild(taskElement);
   });
