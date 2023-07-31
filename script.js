@@ -19,6 +19,9 @@ function addTask() {
     tasks.push(task);
     renderTasks();
     taskInput.value = '';
+
+    // Save tasks to local storage
+    saveTasksToLocalStorage();
   }
 }
 
@@ -29,6 +32,8 @@ function toggleTaskCompletion(taskId) {
       task.completed = !task.completed;
     }
   });
+  // Save tasks to local storage
+  saveTasksToLocalStorage();
   renderTasks();
 }
 
@@ -80,11 +85,29 @@ function renderTasks() {
 // Function to remove a task
 function removeTask(taskId) {
   tasks = tasks.filter(task => task.id !== taskId);
+  // Save tasks to local storage
+  saveTasksToLocalStorage();
   renderTasks();
+}
+
+// Function to save tasks to local storage
+function saveTasksToLocalStorage() {
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+// Function to load tasks from local storage
+function loadTasksFromLocalStorage() {
+  const storedTasks = localStorage.getItem('tasks');
+  if (storedTasks) {
+    tasks = JSON.parse(storedTasks);
+  }
 }
 
 // Event listener for the "Add" button
 addTaskBtn.addEventListener('click', addTask);
+
+// Load tasks from local storage on page load
+loadTasksFromLocalStorage();
 
 // Initial rendering of tasks
 renderTasks();
