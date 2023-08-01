@@ -16,6 +16,10 @@ function addTask() {
       completed: false
     };
 
+    // Add priority level to the task
+    const prioritySelect = document.getElementById('prioritySelect');
+    task.priority = prioritySelect.value;
+
     tasks.push(task);
     renderTasks();
     taskInput.value = '';
@@ -75,9 +79,23 @@ function renderTasks() {
       removeTask(task.id);
     });
 
+    const prioritySelect = document.createElement('select');
+    prioritySelect.id = `priority-${task.id}`;
+    prioritySelect.innerHTML = `
+      <option value="high" ${task.priority === 'high' ? 'selected' : ''}>High</option>
+      <option value="medium" ${task.priority === 'medium' ? 'selected' : ''}>Medium</option>
+      <option value="low" ${task.priority === 'low' ? 'selected' : ''}>Low</option>
+    `;
+
+    prioritySelect.addEventListener('change', () => {
+      task.priority = prioritySelect.value;
+      saveTasksToLocalStorage();
+    });
+
     taskElement.appendChild(checkbox);
     taskElement.appendChild(label);
     taskElement.appendChild(deleteBtn);
+    taskElement.appendChild(prioritySelect);
     taskContainer.appendChild(taskElement);
   });
 }
