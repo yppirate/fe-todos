@@ -20,6 +20,14 @@ function addTask() {
     const prioritySelect = document.getElementById('prioritySelect');
     task.priority = prioritySelect.value;
 
+    // Add priority level to the task
+    const prioritySelect = document.getElementById('prioritySelect');
+    task.priority = prioritySelect.value;
+
+    // Add deadline to the task
+    const deadlineInput = document.getElementById('deadlineInput');
+    task.deadline = deadlineInput.value;
+
     tasks.push(task);
     renderTasks();
     taskInput.value = '';
@@ -92,10 +100,22 @@ function renderTasks() {
       saveTasksToLocalStorage();
     });
 
+    const deadlineInput = document.createElement('input');
+    deadlineInput.type = 'datetime-local';
+    deadlineInput.id = `deadline-${task.id}`;
+    deadlineInput.value = task.deadline || '';
+    deadlineInput.addEventListener('input', () => {
+      task.deadline = deadlineInput.value;
+      saveTasksToLocalStorage();
+      updateRemainingTime(task);
+    });
+
+
     taskElement.appendChild(checkbox);
     taskElement.appendChild(label);
     taskElement.appendChild(deleteBtn);
     taskElement.appendChild(prioritySelect);
+    taskElement.appendChild(deadlineInput);
     taskContainer.appendChild(taskElement);
   });
 }
@@ -119,6 +139,34 @@ function loadTasksFromLocalStorage() {
   if (storedTasks) {
     tasks = JSON.parse(storedTasks);
   }
+}
+
+// Function to update remaining time for a task
+function updateRemainingTime(task) {
+  const deadlineElement = document.getElementById(`deadline-${task.id}`);
+  const remainingTimeElement = document.createElement('span');
+  remainingTimeElement.classList.add('remaining-time');
+
+  if (task.deadline) {
+    const deadline = new Date(task.deadline);
+    const currentTime = new Date();
+    const remainingTime = deadline - currentTime;
+
+    if (remainingTime <= 0) {
+      remainingTimeElement.innerText = 'Past Deadline';
+    } else {
+      const days = Math.floor(remainingTime / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((remainingTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      remainingTimeElement.innerText = `${days}d ${hours}h remaining`;
+    }
+  }
+
+  const existingRemainingTime = document.getElementById(`remaining-${task.id}`);
+  if (existingRemainingTime) {
+    existingRemainingTime.remove();
+  }
+
+  deadlineElement.insertAdjacentElement('afterend', remainingTimeElement);
 }
 
 // Event listener for the "Add" button
