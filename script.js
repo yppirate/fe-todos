@@ -169,6 +169,49 @@ function updateRemainingTime(task) {
   deadlineElement.insertAdjacentElement('afterend', remainingTimeElement);
 }
 
+// Function to initialize drag-and-drop functionality
+function initDragAndDrop() {
+  const tasks = document.querySelectorAll('.task');
+
+  tasks.forEach(task => {
+    task.addEventListener('dragover', event => {
+      event.preventDefault();
+      const draggingTask = document.querySelector('.dragging');
+      const bounding = task.getBoundingClientRect();
+      const offset = bounding.y + bounding.height / 2;
+      if (event.clientY - offset > 0) {
+        task.style.borderBottom = '2px dashed #ccc';
+        task.style.borderTop = '';
+      } else {
+        task.style.borderBottom = '';
+        task.style.borderTop = '2px dashed #ccc';
+      }
+    });
+
+    task.addEventListener('dragleave', () => {
+      task.style.borderBottom = '';
+      task.style.borderTop = '';
+    });
+
+    task.addEventListener('drop', event => {
+      event.preventDefault();
+      const draggingTask = document.querySelector('.dragging');
+      const parent = task.parentElement;
+      const draggingIndex = Array.from(parent.children).indexOf(draggingTask);
+      const dropIndex = Array.from(parent.children).indexOf(task);
+
+      if (draggingIndex < dropIndex) {
+        parent.insertBefore(draggingTask, task.nextSibling);
+      } else {
+        parent.insertBefore(draggingTask, task);
+      }
+
+      task.style.borderBottom = '';
+      task.style.borderTop = '';
+    });
+  });
+}
+
 // Event listener for the "Add" button
 addTaskBtn.addEventListener('click', addTask);
 
