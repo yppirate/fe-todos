@@ -56,6 +56,7 @@ function renderTasks() {
   tasks.forEach(task => {
     const taskElement = document.createElement('div');
     taskElement.classList.add('task');
+    taskElement.draggable = true;
     taskElement.innerHTML = `
       <input type="checkbox" id="task-${task.id}" ${task.completed ? 'checked' : ''}>
       <label for="task-${task.id}" ${task.completed ? 'style="text-decoration: line-through;"' : ''}>${task.text}</label>
@@ -100,6 +101,15 @@ function renderTasks() {
       saveTasksToLocalStorage();
     });
 
+    taskElement.addEventListener('dragstart', () => {
+      taskElement.classList.add('dragging');
+    });
+
+    taskElement.addEventListener('dragend', () => {
+      taskElement.classList.remove('dragging');
+      saveTasksToLocalStorage();
+    });
+
     const deadlineInput = document.createElement('input');
     deadlineInput.type = 'datetime-local';
     deadlineInput.id = `deadline-${task.id}`;
@@ -115,9 +125,11 @@ function renderTasks() {
     taskElement.appendChild(label);
     taskElement.appendChild(deleteBtn);
     taskElement.appendChild(prioritySelect);
+    taskElement.appendChild(remainingTimeElement);
     taskElement.appendChild(deadlineInput);
     taskContainer.appendChild(taskElement);
   });
+  initDragAndDrop();
 }
 
 // Function to remove a task
