@@ -120,7 +120,23 @@ function renderTasks() {
       updateRemainingTime(task);
     });
 
+    // Filter options
+    const filterSelect = document.createElement('select');
+    filterSelect.id = 'filterSelect';
+    filterSelect.innerHTML = `
+    <option value="all">All Tasks</option>
+    <option value="active">Active Tasks</option>
+    <option value="completed">Completed Tasks</option>
+    `;
+    filterSelect.addEventListener('change', () => {
+      const selectedFilter = filterSelect.value;
+      renderTasksByFilter(selectedFilter);
+    });
 
+    taskContainer.insertBefore(filterSelect, taskContainer.firstChild);
+
+    renderTasksByFilter('all');
+    
     taskElement.appendChild(checkbox);
     taskElement.appendChild(label);
     taskElement.appendChild(deleteBtn);
