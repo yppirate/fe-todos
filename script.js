@@ -240,6 +240,45 @@ function initDragAndDrop() {
   });
 }
 
+// Function to edit a task
+function editTask(taskId) {
+  const taskToEdit = tasks.find(task => task.id === taskId);
+
+  // Display the edit modal
+  const editModal = document.getElementById('editModal');
+  const editTaskInput = document.getElementById('editTaskInput');
+  const editPrioritySelect = document.getElementById('editPrioritySelect');
+  const editDeadlineInput = document.getElementById('editDeadlineInput');
+  const editCompletedCheckbox = document.getElementById('editCompletedCheckbox');
+
+  editTaskInput.value = taskToEdit.text;
+  editPrioritySelect.value = taskToEdit.priority;
+  editDeadlineInput.value = taskToEdit.deadline || '';
+  editCompletedCheckbox.checked = taskToEdit.completed;
+
+  editModal.style.display = 'block';
+
+  // Save edited task
+  const saveEditBtn = document.getElementById('saveEditBtn');
+  saveEditBtn.addEventListener('click', () => {
+    taskToEdit.text = editTaskInput.value;
+    taskToEdit.priority = editPrioritySelect.value;
+    taskToEdit.deadline = editDeadlineInput.value;
+    taskToEdit.completed = editCompletedCheckbox.checked;
+
+    saveTasksToLocalStorage();
+    renderTasks();
+    editModal.style.display = 'none';
+  });
+
+  // Close modal without saving
+  const cancelEditBtn = document.getElementById('cancelEditBtn');
+  cancelEditBtn.addEventListener('click', () => {
+    editModal.style.display = 'none';
+  });
+}
+
+
 // Event listener for the "Add" button
 addTaskBtn.addEventListener('click', addTask);
 
