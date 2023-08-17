@@ -278,6 +278,27 @@ function editTask(taskId) {
   });
 }
 
+// Function to set a reminder for a task
+function setTaskReminder(task) {
+  const deadline = new Date(task.deadline);
+  const currentTime = new Date();
+  const timeDifference = deadline - currentTime;
+
+  if (timeDifference > 0 && timeDifference <= 24 * 60 * 60 * 1000) { // 24 hours
+    const reminderTime = new Date(currentTime.getTime() + timeDifference - 15 * 60 * 1000); // 15 minutes before deadline
+    const options = {
+      body: `Your task "${task.text}" is due soon!`,
+      icon: 'path/to/icon.png' // Replace with the path to your notification icon
+    };
+
+    const notification = new Notification('Task Reminder', options);
+
+    notification.onclick = function () {
+      // Open the application or perform any desired action
+    };
+  }
+}
+
 
 // Event listener for the "Add" button
 addTaskBtn.addEventListener('click', addTask);
