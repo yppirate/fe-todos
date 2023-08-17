@@ -299,6 +299,10 @@ function setTaskReminder(task) {
   }
 }
 
+// Request permission for browser notifications
+if (Notification.permission !== 'granted') {
+  Notification.requestPermission();
+}
 
 // Event listener for the "Add" button
 addTaskBtn.addEventListener('click', addTask);
