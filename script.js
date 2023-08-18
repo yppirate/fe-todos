@@ -8,32 +8,41 @@ let tasks = [];
 
 // Function to add a new task
 function addTask() {
-  const taskText = taskInput.value.trim();
-  if (taskText !== '') {
-    const task = {
-      id: Date.now(),
-      text: taskText,
-      completed: false
-    };
+  const taskInput = document.getElementById('taskInput').value.trim();
 
-    // Add priority level to the task
-    const prioritySelect = document.getElementById('prioritySelect');
-    task.priority = prioritySelect.value;
+  if (taskInput === '') {
+    return;
+  }
 
-    // Add priority level to the task
-    const prioritySelect = document.getElementById('prioritySelect');
-    task.priority = prioritySelect.value;
+  const newTask = {
+    id: Date.now(),
+    text: taskInput,
+    completed: false,
+    priority: 'medium',
+    deadline: ''
+  };
 
-    // Add deadline to the task
-    const deadlineInput = document.getElementById('deadlineInput');
-    task.deadline = deadlineInput.value;
+  tasks.push(newTask);
 
-    tasks.push(task);
-    renderTasks();
-    taskInput.value = '';
+  renderTasks();
 
-    // Save tasks to local storage
-    saveTasksToLocalStorage();
+  // Clear the input field
+  document.getElementById('taskInput').value = '';
+
+  // Add priority level to the task
+  const prioritySelect = document.getElementById('prioritySelect');
+  newTask.priority = prioritySelect.value;
+
+  // Add deadline to the task
+  const deadlineInput = document.getElementById('deadlineInput');
+  newTask.deadline = deadlineInput.value;
+
+  // Save tasks to local storage
+  saveTasksToLocalStorage();
+
+  // Set task reminder if deadline is set
+  if (newTask.deadline) {
+    setTaskReminder(newTask);
   }
 }
 
