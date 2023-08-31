@@ -12,8 +12,3 @@ A simple To-Do List application built with HTML, CSS, and JavaScript. This appli
 - Receive reminders for approaching deadlines
 - Drag-and-drop to reorder tasks
 - Edit task details
-
-## Demo
-
-TBC
-
