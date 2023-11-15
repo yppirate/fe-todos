@@ -26,7 +26,6 @@ function addTask() {
 
   renderTasks();
 
-  // Clear the input field
   document.getElementById('taskInput').value = '';
 
   // Add priority level to the task
